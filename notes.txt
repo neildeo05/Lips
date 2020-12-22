@@ -1,0 +1,20 @@
+NOTES:
+a program is an operator followed by one or more expressions, where an expression is a number or an operator
+followed by more expressions
+
+Program - start of input, operator or one or more expression, end of input
+Expression - number, (, Operator, one or more expression and a )
+Operator - mathematical operators
+Number - Number between 0 - 9 (can be negative denoted with -)
+
+Number in regex is -?[0-9]+
+- is optional, one character between 0 to 9 is required
+
+AST:
+Leaves of the trees are the actual operators, numbers, or data that is supposed to be in the program
+Branches - rules used to produce this part of the tree (how to traverse it)
+operator|char1:6 '-' -> the operator|char1:6 thing is the branch, and the leaf is the '-'
+
+If the node is tagged with number, it is always a number, and has no children (base case)
+expr + !number -> second child to see operator, apply operator to the remaining children excluding final
+
