@@ -47,9 +47,17 @@ long eval_op(long x, char* op, long y) {
 }
 
 /*
-CASE 1: + 10 10
-CASE 2: + (/10 10) 10
-CASE 3: / 10 20 + 10
+CASE 1: {+ 10 10}
+-----------------
+ >
+  regex
+  operator|char:1:1 '+'
+  expr|number|regex:1:3 '10'
+  expr|number|regex:1:6 '10'
+  regex
+-----------------
+CASE 2: {+ (/10 10) 10}
+CASE 3: {/ 10 20 + 10}
 */
 
 long eval(mpc_ast_t* t) {
@@ -58,8 +66,7 @@ long eval(mpc_ast_t* t) {
   } //Base Case -> if the current tag is a number (expr|number|regex) (return the current number as a int)
   //Operator has to be the second thing in the expression (after regex)
   char *op = t->children[1]->contents;
-  //TODO: what does this do?
-  mpc_ast_print(t->children[2]);
+  mpc_ast_print(t);
   long x = eval(t->children[2]);
   int i = 3;
   while(strstr(t->children[i]->tag, "expr")) {
