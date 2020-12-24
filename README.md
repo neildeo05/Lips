@@ -6,7 +6,7 @@ Simple REPL and interpreter in C
 ```console
 $ make -B
 $ ./parsing
-
+```
 
 
 ## Example
