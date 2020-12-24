@@ -117,7 +117,14 @@ lval eval_op(lval x, char* op, lval y) {
   /* If none are true, return 0; This should never occur because of syntax checking*/
   return lval_err(LERR_BAD_OP);
 }
-
+/*
+ >
+  regex
+  operator|char:1:1 '+'
+  expr|number|regex:1:3 '10'
+  expr|number|regex:1:6 '10'
+  regex
+*/
 lval eval(mpc_ast_t* t) {
   //Base Case -> if the current tag is a number (expr|number|regex) (return the current number as a int)
   if (strstr(t->tag, "number")) {
@@ -126,13 +133,13 @@ lval eval(mpc_ast_t* t) {
 	return errno != ERANGE ? lval_num(x) : lval_err(LERR_BAD_NUM);
   }
   //Operator has to be the second thing in the expression (after regex)
-  char *op = t->children[1]->contents;
-  lval x = eval(t->children[2]);
+  char *op = t->children[1]->contents; //first is plus
+  lval x = eval(t->children[2]); //x is 10
 
-  int i = 3;
-  while(strstr(t->children[i]->tag, "expr")) {
-	x = eval_op(x, op, eval(t->children[i]));
-	i++;
+  int i = 3; //ignore the operator and the first number
+  while(strstr(t->children[i]->tag, "expr")) { //should not be an operator or a parentheses
+	x = eval_op(x, op, eval(t->children[i])); //evaluate the first number, the current number and the op
+	i++; //increment the counter to go past the currentt value in the expression
   }
   return x;
 }
