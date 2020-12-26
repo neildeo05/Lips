@@ -1,11 +1,14 @@
 # Lips
 
-Simple REPL and interpreter in C
+Simple REPL and in C
+Misc contains some experiments and other programs that test the repl
+ 
+
 
 ## Quickstart
 ```console
-$ make -B
-$ ./parsing
+$ make parsing
+$ make tests
 ```
 
 

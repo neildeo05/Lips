@@ -114,6 +114,11 @@ lval eval_op(lval x, char* op, lval y) {
 	  ? lval_err(LERR_DIV_ZERO)
 	  : lval_num(x.num/y.num);
   }
+  if(strcmp(op, "%") == 0) {
+	return y.num == 0
+	  ? lval_err(LERR_DIV_ZERO)
+	  : lval_num(x.num % y.num);
+	  };
   /* If none are true, return 0; This should never occur because of syntax checking*/
   return lval_err(LERR_BAD_OP);
 }
@@ -151,7 +156,7 @@ int main(int argc, char** argv) {
   mpc_parser_t* Lips = mpc_new("lips");
   mpca_lang(MPCA_LANG_DEFAULT,
 	  "number   : /-?[0-9]+/ ;                          \
-	  operator : '+' | '-' | '*' | '/' ;                \
+	  operator : '+' | '-' | '*' | '/' | '%' ;          \
 	  expr     : <number> | '(' <operator><expr>+ ')';  \
 	  lips     : /^/ <operator> <expr>+ /$/ ;           \
 	  ",
